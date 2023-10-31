@@ -35,7 +35,7 @@ steps:
   - cd /tmp
   - git clone $GITOPS_REPO
   - cd /tmp/$GITOPS_FOLDER/
-  - sed -i "s|$ECR_ADDR/airline-engine-db2scraper:[^ ]*|$ECR_ADDR/airline-engine-db2scraper:${DRONE_COMMIT_SHA}|g" /tmp/$GITOPS_FOLDER/demo-app/airline-engine/db2scraper-cron.yaml
+  - sed -i "s|$ECR_ADDR/node-server-demo:[^ ]*|$ECR_ADDR/node-server-demo:${DRONE_COMMIT_SHA}|g" /tmp/$GITOPS_FOLDER/demo-app/backend.yaml
   - git add -A
   - git commit -m"Drone | updated airline-engine-db2scraper image tag to ${DRONE_COMMIT_SHA}"
   - git push origin dev
