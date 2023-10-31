@@ -44,9 +44,9 @@ steps:
   - cd /tmp
   - git clone -b $GIT_BRANCH $GITOPS_REPO
   - cd /tmp/$GITOPS_FOLDER/
-  - sed -i "s|$ECR_ADDR/${DRONE_REPO##*/}:[^ ]*|$ECR_ADDR/${DRONE_REPO##*/}:${DRONE_COMMIT_SHA}|g" /tmp/$GITOPS_FOLDER/$PATH/backend.yaml
+  - sed -i "s|$ECR_ADDR/${DRONE_REPO##*/}:[^ ]*|$ECR_ADDR/${DRONE_REPO##*/}:${DRONE_COMMIT_SHA}|g" /tmp/$GITOPS_FOLDER/$APP_PATH/${DRONE_REPO##*/}.yaml
   - git add -A
-  - git commit -m"Drone | updated airline-engine-db2scraper image tag to ${DRONE_COMMIT_SHA}"
+  - git commit -m"Drone | updated ${APP_PATH}/${DRONE_REPO##*/}.yaml with new image tag set to ${DRONE_COMMIT_SHA}"
   - git push origin $GIT_BRANCH
 
 
