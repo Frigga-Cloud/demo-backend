@@ -41,7 +41,7 @@ steps:
   commands:
   - echo ${DRONE_REPO##*/}
   - cd /tmp
-  - git clone -b ${GIT_BRANCH} ${GITOPS_REPO}
+  - git clone -b $GIT_BRANCH ${GITOPS_REPO}
   - cd /tmp/${GITOPS_FOLDER}/
   - sed -i "s|${ECR_ADDR}/${DRONE_REPO##*/}:[^ ]*|${ECR_ADDR}/${DRONE_REPO##*/}:${DRONE_COMMIT_SHA}|g" /tmp/${GITOPS_FOLDER}/${APP_PATH}/${DRONE_REPO##*/}.yaml
   - git add -A
