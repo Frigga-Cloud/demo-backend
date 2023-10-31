@@ -2,6 +2,10 @@ kind: pipeline
 type: kubernetes
 name: default
 
+trigger:
+  branch: 
+  - main
+
 steps:
 - name: build & push  
   image: plugins/ecr
@@ -16,7 +20,7 @@ steps:
     dockerfile: Dockerfile
     context: .
     tags: ${DRONE_COMMIT_SHA}
-    repo: demo-backend
+    repo: ${DRONE_REPO}
     registry:
       from_secret: AWS_REGISTRY
     lifecycle_policy: aws-ecr-lifecycle-policy.json
