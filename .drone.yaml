@@ -20,7 +20,7 @@ steps:
     dockerfile: Dockerfile
     context: .
     tags: ${DRONE_COMMIT_SHA}
-    repo: ${DRONE_REPO/[^a-z0-9._-]/_}
+    repo: demo-backend
     registry:
       from_secret: AWS_REGISTRY
     lifecycle_policy: aws-ecr-lifecycle-policy.json
@@ -37,6 +37,7 @@ steps:
       from_secret: ECR_ADDR
     GIT_BRANCH: main  
   commands:
+  - echo ${DRONE_REPO}
   - cd /tmp
   - git clone -b $GIT_BRANCH $GITOPS_REPO
   - cd /tmp/$GITOPS_FOLDER/
