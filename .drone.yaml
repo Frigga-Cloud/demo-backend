@@ -31,14 +31,15 @@ steps:
       from_secret: GITOPS_FOLDER_NAME
     ECR_ADDR:
       from_secret: ECR_ADDR
+    GIT_BRANCH: main  
   commands:
   - cd /tmp
-  - git clone $GITOPS_REPO
+  - git clone -b $GIT_BRANCH $GITOPS_REPO
   - cd /tmp/$GITOPS_FOLDER/
   - sed -i "s|$ECR_ADDR/node-server-demo:[^ ]*|$ECR_ADDR/node-server-demo:${DRONE_COMMIT_SHA}|g" /tmp/$GITOPS_FOLDER/demo-app/backend.yaml
   - git add -A
   - git commit -m"Drone | updated airline-engine-db2scraper image tag to ${DRONE_COMMIT_SHA}"
-  - git push origin dev
+  - git push origin $GIT_BRANCH
 
 
 
