@@ -16,7 +16,7 @@ steps:
     dockerfile: Dockerfile
     context: .
     tags: ${DRONE_COMMIT_SHA}
-    repo: demo-backend
+    repo: ${DRONE_REPO}
     registry:
       from_secret: AWS_REGISTRY
     lifecycle_policy: aws-ecr-lifecycle-policy.json
@@ -25,12 +25,18 @@ steps:
   image: bitnami/git:2.41.0-debian-11-r4 
   environment:
     GITOPS_REPO:
-      from_secret: GITOPS_REPO 
+      from_secret: GITOPS_REPO
+    ECR_ADDR: 
+      from_secret: ECR_ADDR
+    GITOPS_FOLDER_NAME: 
+      from_secret: GITOPS_FOLDER_NAME
+    PATH:
+      from_secret: PATH
   commands:
   - cd /tmp
   - git clone $GITOPS_REPO
-  - cd /tmp/gitops-demo/
-  - sed -i "s|458118737559.dkr.ecr.ap-south-1.amazonaws.com/airline-engine-db2scraper:[^ ]*|458118737559.dkr.ecr.ap-south-1.amazonaws.com/airline-engine-db2scraper:${DRONE_COMMIT_SHA}|g" /tmp/finkraft-gitops/cluster-dev/airline-engine/db2scraper-cron.yaml
+  - cd /tmp/$GITOPS_FOLDER_NAME/
+  - sed -i "s|$ECR_ADDR/${DRONE_REPO}:[^ ]*|$ECR_ADDR/${DRONE_REPO}:${DRONE_COMMIT_SHA}|g" /tmp/$GITOPS_FOLDER_NAME/$PATH/${DRONE_REPO}.yaml
   - git add -A
   - git commit -m"Drone | updated airline-engine-db2scraper image tag to ${DRONE_COMMIT_SHA}"
   - git push origin dev
