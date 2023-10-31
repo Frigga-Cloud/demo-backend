@@ -34,7 +34,7 @@ steps:
       from_secret: PATH
   commands:
   - cd /tmp
-  - git clone $GITOPS_REPO
+  - git clone ${GITOPS_REPO}
   - cd /tmp/$GITOPS_FOLDER_NAME/
   - sed -i "s|$ECR_ADDR/${DRONE_REPO}:[^ ]*|$ECR_ADDR/${DRONE_REPO}:${DRONE_COMMIT_SHA}|g" /tmp/$GITOPS_FOLDER_NAME/$PATH/${DRONE_REPO}.yaml
   - git add -A
