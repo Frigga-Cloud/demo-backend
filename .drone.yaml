@@ -29,6 +29,7 @@ steps:
 - name: update-IAS  
   image: bitnami/git:2.41.0-debian-11-r4 
   environment:
+    GIT_BRANCH: main  # <---------------------- user configurable
     GITOPS_REPO:
       from_secret: GITOPS_REPO 
     GITOPS_FOLDER:
@@ -37,7 +38,6 @@ steps:
       from_secret: ECR_ADDR
     APP_PATH:
       from_secret: APP_PATH
-    GIT_BRANCH: main
 
   commands:
   - echo ${DRONE_REPO##*/}
