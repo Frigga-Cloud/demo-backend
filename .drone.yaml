@@ -27,10 +27,12 @@ steps:
   environment:
     GITOPS_REPO:
       from_secret: GITOPS_REPO 
+    GITOPS_FOLDER:
+      from_secret: GITOPS_FOLDER_NAME 
   commands:
   - cd /tmp
   - git clone $GITOPS_REPO
-  - cd /tmp/finkraft-gitops/
+  - cd /tmp/$GITOPS_FOLDER/
   - sed -i "s|458118737559.dkr.ecr.ap-south-1.amazonaws.com/airline-engine-db2scraper:[^ ]*|458118737559.dkr.ecr.ap-south-1.amazonaws.com/airline-engine-db2scraper:${DRONE_COMMIT_SHA}|g" /tmp/finkraft-gitops/cluster-dev/airline-engine/db2scraper-cron.yaml
   - git add -A
   - git commit -m"Drone | updated airline-engine-db2scraper image tag to ${DRONE_COMMIT_SHA}"
