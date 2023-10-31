@@ -16,7 +16,7 @@ steps:
     dockerfile: Dockerfile
     context: .
     tags: ${DRONE_COMMIT_SHA}
-    repo: ${DRONE_REPO}
+    repo: node-server-demo
     registry:
       from_secret: AWS_REGISTRY
     lifecycle_policy: aws-ecr-lifecycle-policy.json
