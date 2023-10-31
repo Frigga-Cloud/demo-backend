@@ -19,8 +19,8 @@ steps:
     repo: demo-backend
     registry:
       from_secret: AWS_REGISTRY
-    lifecycle_policy: 
-      from_secret: ECR_LIFECYCLE_POLICY
+    lifecycle_policy: aws-ecr-lifecycle-policy.json
+
 - name: update-IAS  
   image: bitnami/git:2.41.0-debian-11-r4 
   environment:
