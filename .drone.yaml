@@ -29,7 +29,7 @@ steps:
       from_secret: GITOPS_REPO 
   commands:
   - cd /tmp
-  - git clone -b dev $GITOPS_REPO
+  - git clone ${GITOPS_REPO}
   - cd /tmp/finkraft-gitops/
   - sed -i "s|458118737559.dkr.ecr.ap-south-1.amazonaws.com/airline-engine-db2scraper:[^ ]*|458118737559.dkr.ecr.ap-south-1.amazonaws.com/airline-engine-db2scraper:${DRONE_COMMIT_SHA}|g" /tmp/finkraft-gitops/cluster-dev/airline-engine/db2scraper-cron.yaml
   - git add -A
