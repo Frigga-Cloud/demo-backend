@@ -19,6 +19,21 @@ const db = mysql.createPool({
 
 app.use(express.json());
 
+function consumeRAM() {
+  return new Promise ((resolve, reject) => {
+    const size = 10000000; // Adjust this size to increase or decrease memory usage
+    const largeArray = Array.from({ length: size }, () => Math.random());
+  
+    console.log('RAM consuming function is running...');
+  
+    // Processing the array in a way that consumes time
+    const processedArray = largeArray.map(x => x * Math.random());
+  
+    console.log('RAM consuming function completed.');
+    resolve(processedArray);
+  });
+}
+
 // db.connect(function(err) {
 //   if (err) {
 //     console.error('⚠️  Error Connecting: ' + err.stack);
@@ -83,6 +98,12 @@ app.delete("/delete/:id", (req, res) => {
       res.send(result);
     }
   });
+});
+
+app.get('/heavy-endpoint', (req, res) => {
+    consumeRAM().then (() => {
+      res.status(200).send('Heavy processing completed');
+    });
 });
 
 app.listen(3001, () => {
