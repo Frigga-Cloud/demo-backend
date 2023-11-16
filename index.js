@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 const cors = require("cors");
 require('dotenv').config();
 
-//Allowing everything
+//Allowing everything dummy change
 app.use(cors({
   origin: '*'
 }));
