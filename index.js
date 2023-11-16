@@ -23,7 +23,7 @@ app.use(express.json());
 
 function consumeRAM() {
   return new Promise ((resolve, reject) => {
-    const size = 10000000; // Adjust this size to increase or decrease memory usage
+    const size = 100000000; // Adjust this size to increase or decrease memory usage
     const largeArray = Array.from({ length: size }, () => Math.random());
   
     console.log('RAM consuming function is running...');
@@ -32,6 +32,11 @@ function consumeRAM() {
     const processedArray = largeArray.map(x => x * Math.random());
   
     console.log('RAM consuming function completed.');
+
+  //   if (n < 2) {
+  //     return n;
+  // }
+  //   return calculateFibonacci(n - 1) + calculateFibonacci(n - 2);
     resolve(processedArray);
   });
 }
