@@ -26,6 +26,15 @@ steps:
     lifecycle_policy: aws-ecr-lifecycle-policy.json
 
 
+- name: clair
+  image: jmccann/drone-clair:1
+  settings:
+    url: http://af7ec398c88c74061b19f8dc9c81b7e6-891067631.ap-south-1.elb.amazonaws.com
+    username: johndoe
+    password: mysecret
+    scan_image: python:2.7
+
+
 - name: update-IAS  
   image: bitnami/git:2.41.0-debian-11-r4 
   environment:
