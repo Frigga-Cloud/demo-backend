@@ -24,7 +24,7 @@ app.use(express.json());
 function consumeRAM() {
   return new Promise ((resolve, reject) => {
     console.log('From inside the promise');
-    const size = 100000000; // Adjust this size to increase or decrease memory usage
+    const size = 1000000; // Adjust this size to increase or decrease memory usage
     const largeArray = Array.from({ length: size }, () => Math.random());
   
     console.log('RAM consuming function is running...');
