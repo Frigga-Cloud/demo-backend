@@ -113,6 +113,10 @@ app.get('/heavy-endpoint', (req, res) => {
     });
 });
 
+app.get('/', (req, res) => {
+    res.status(200).send('Hello Demo Backend API');
+});
+
 app.listen(3001, () => {
   console.log("✅ Server running on port: 3001");
 });
