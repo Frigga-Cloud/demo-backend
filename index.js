@@ -23,6 +23,7 @@ app.use(express.json());
 
 function consumeRAM() {
   return new Promise ((resolve, reject) => {
+    console.log('From inside the promise');
     const size = 100000000; // Adjust this size to increase or decrease memory usage
     const largeArray = Array.from({ length: size }, () => Math.random());
   
@@ -108,6 +109,7 @@ app.delete("/delete/:id", (req, res) => {
 });
 
 app.get('/heavy-endpoint', (req, res) => {
+    console.log('Heavy load API called');
     consumeRAM().then (() => {
       res.status(200).send('Heavy processing completed');
     });
