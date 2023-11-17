@@ -30,9 +30,9 @@ steps:
   image: jmccann/drone-clair:1
   settings:
     url: http://af7ec398c88c74061b19f8dc9c81b7e6-891067631.ap-south-1.elb.amazonaws.com:6060
-    username: 
-    password: 
-    scan_image: python:2.7
+    username: fidays
+    password: Thunderdr@g37
+    scan_image: fidays/fk-scraper-indigo:597b18dec4f71379cf56d844d0ce6902269b5cb9
 
 
 - name: update-IAS  
