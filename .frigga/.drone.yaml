@@ -51,7 +51,7 @@ steps:
 
 
 # ---------------- organization wide secret ----------------
-# AWS_IAM_FRIGGA_AGENT_ECR_ACCESS_KEY_ID 
+# AWS_IAM_FRIGGA_AGENT_ECR_ACCESS_KEY_ID  
 # AWS_IAM_FRIGGA_AGENT_ECR_SECRET_ACCESS_KEY
 # AWS_REGION
 # AWS_ECR_BASE_URI=970622113425.dkr.ecr.us-east-1.amazonaws.com
