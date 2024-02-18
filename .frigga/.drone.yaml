@@ -36,7 +36,6 @@ steps:
       from_secret: GITOPS_SVC_NAME            # `demo` (repo-secret), this is the microservice name. root lavel folder-name in GitOps repo
     AWS_ECR_BASE_URI:
       from_secret: AWS_ECR_BASE_URI           # 970622113425.dkr.ecr.us-east-1.amazonaws.com
-    COMMIT_MSG: ${DRONE_COMMIT_MESSAGE}
   commands:
   - cd /tmp
   - echo $COMMIT_MSG
