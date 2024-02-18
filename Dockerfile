@@ -18,3 +18,4 @@ EXPOSE 3001
 
 # Set the command to run your app using node
 CMD ["node", "index.js"]
+ 
