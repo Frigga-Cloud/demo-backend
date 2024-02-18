@@ -4,7 +4,7 @@ name: default
 
 trigger:
   branch: 
-  - main # <---------------------- user configurable
+  - main # this pipeline will get triggered whenn there is a commit in the main branch of the appilcation repo
 
 steps:
 - name: build & push  
@@ -19,7 +19,7 @@ steps:
       from_secret: AWS_REGION                                 # us-east-1 (org-secret)
     dockerfile: Dockerfile
     context: .
-    tags: ${DRONE_COMMIT_SHA}
+    tags: ${DRONE_COMMIT_SHA:0:7}
     repo: ${DRONE_REPO##*/}                                   # a new ECR repo will be created with the same name as the appilication repo
     registry: 
       from_secret: AWS_ECR_BASE_URI                           # 970622113425.dkr.ecr.us-east-1.amazonaws.com (org-secret) 
@@ -31,24 +31,21 @@ steps:
   environment:
     GITOPS_BRANCH: main                       # Target environment where CD (argo) will deploy this new image
     GITOPS_REPO:
-      from_secret: GITOPS_REPO                # `https://tuhin37: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@github.com/Frigga-Cloud/frigga-gitops.git` (org-secret) 
+      from_secret: GITOPS_REPO                # `https://tuhin37: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@github.com/Frigga-Cloud/frigga-gitops.git` (org-secret) 
     GITOPS_SVC_NAME:
       from_secret: GITOPS_SVC_NAME            # `demo` (repo-secret), this is the microservice name. root lavel folder-name in GitOps repo
     AWS_ECR_BASE_URI:
       from_secret: AWS_ECR_BASE_URI           # 970622113425.dkr.ecr.us-east-1.amazonaws.com
   commands:
   - cd /tmp
-  - echo $COMMIT_MSG
   - git clone -b $GITOPS_BRANCH $GITOPS_REPO
   - cd frigga-gitops
-  - sed -i "s|$AWS_ECR_BASE_URI/${DRONE_REPO##*/}:[^ ]*|$AWS_ECR_BASE_URI/${DRONE_REPO##*/}:${DRONE_COMMIT_SHA}|g" /tmp/frigga-gitops/$GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml
+  - sed -i "s|$AWS_ECR_BASE_URI/${DRONE_REPO##*/}:[^ ]*|$AWS_ECR_BASE_URI/${DRONE_REPO##*/}:${DRONE_COMMIT_SHA:0:7}|g" /tmp/frigga-gitops/$GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml
   - git add /tmp/frigga-gitops/$GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml
-  - git commit -m"Drone | ${DRONE_REPO##*/}/deployment.yaml with new image tag set to ${DRONE_COMMIT_SHA}"
+  - git commit -m"Drone | updated $GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml with new image tag set to ${DRONE_COMMIT_SHA:0:7}"
   - git push origin $GITOPS_BRANCH
 
-# git clone -b dev https://tuhin37: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@github.com/THG-Procure-Team/supplier-compliance-gitops.git
-
-
+# git clone -b main https://tuhin37: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@github.com/Frigga-Cloud/frigga-gitops.git
 
 
 # ---------------- organization wide secret ----------------
