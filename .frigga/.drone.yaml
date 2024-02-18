@@ -59,6 +59,6 @@ steps:
 
 
 # ---------------- organization wide secret ----------------
-# GITOPS_SVC_NAME=demo
+# GITOPS_SVC_NAME=demo 
 
 
