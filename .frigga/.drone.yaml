@@ -42,7 +42,7 @@ steps:
   - cd frigga-gitops
   - sed -i "s|$AWS_ECR_BASE_URI/${DRONE_REPO##*/}:[^ ]*|$AWS_ECR_BASE_URI/${DRONE_REPO##*/}:${DRONE_COMMIT_SHA}|g" /tmp/frigga-gitops/$GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml
   - git add /tmp/frigga-gitops/$GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml
-  - git commit -m"Drone | updated $GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml with new image tag set to ${DRONE_COMMIT_SHA}"
+  - git commit -m"Drone | ${DRONE_COMMIT_MESSAGE}"
   - git push origin $GITOPS_BRANCH
 
 # git clone -b dev https://tuhin37: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@github.com/THG-Procure-Team/supplier-compliance-gitops.git
