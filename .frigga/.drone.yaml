@@ -1,0 +1,64 @@
+kind: pipeline
+type: kubernetes
+name: default
+
+trigger:
+  branch: 
+  - main # <---------------------- user configurable
+
+steps:
+- name: build & push  
+  image: plugins/ecr
+  settings:
+    access_key:
+      from_secret:  AWS_IAM_FRIGGA_AGENT_ECR_ACCESS_KEY_ID    # (org-secret)
+    secret_key:
+      from_secret: AWS_IAM_FRIGGA_AGENT_ECR_SECRET_ACCESS_KEY # (org-secret)
+    create_repository: true
+    region: 
+      from_secret: AWS_REGION                                 # us-east-1 (org-secret)
+    dockerfile: Dockerfile
+    context: .
+    tags: ${DRONE_COMMIT_SHA}
+    repo: ${DRONE_REPO##*/}                                   # a new ECR repo will be created with the same name as the appilication repo
+    registry: 
+      from_secret: AWS_ECR_BASE_URI                           # 970622113425.dkr.ecr.us-east-1.amazonaws.com (org-secret) 
+    lifecycle_policy: .frigga/aws-ecr-lifecycle-policy.json
+
+
+- name: update-IAS  
+  image: bitnami/git:2.41.0-debian-11-r4 
+  environment:
+    GITOPS_BRANCH: main                       # Target environment where CD (argo) will deploy this new image
+    GITOPS_REPO:
+      from_secret: GITOPS_REPO                # `https://tuhin37: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@github.com/Frigga-Cloud/frigga-gitops.git` (org-secret) 
+    GITOPS_SVC_NAME:
+      from_secret: GITOPS_SVC_NAME            # `demo` (repo-secret), this is the microservice name. root lavel folder-name in GitOps repo
+    AWS_ECR_BASE_URI:
+      from_secret: AWS_ECR_BASE_URI           # 970622113425.dkr.ecr.us-east-1.amazonaws.com
+  commands:
+  - cd /tmp
+  - git clone -b $GITOPS_BRANCH $GITOPS_REPO
+  - cd frigga-gitops
+  - sed -i "s|$AWS_ECR_BASE_URI/${DRONE_REPO##*/}:[^ ]*|$AWS_ECR_BASE_URI/${DRONE_REPO##*/}:${DRONE_COMMIT_SHA}|g" /tmp/frigga-gitops/$GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml
+  - git add /tmp/frigga-gitops/$GITOPS_SVC_NAME/${DRONE_REPO##*/}/deployment.yaml
+  - git commit -m"Drone | ${DRONE_COMMIT_MESSAGE}" # the gitops commit msg is asme as the commit msg from the application repo
+  - git push origin $GITOPS_BRANCH
+
+# git clone -b dev https://tuhin37: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@github.com/THG-Procure-Team/supplier-compliance-gitops.git
+
+
+
+
+# ---------------- organization wide secret ----------------
+# AWS_IAM_FRIGGA_AGENT_ECR_ACCESS_KEY_ID 
+# AWS_IAM_FRIGGA_AGENT_ECR_SECRET_ACCESS_KEY
+# AWS_REGION
+# AWS_ECR_BASE_URI=970622113425.dkr.ecr.us-east-1.amazonaws.com
+# GITOPS_REPO=https://tuhin37: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@github.com/Frigga-Cloud/frigga-gitops.git
+
+
+# ---------------- organization wide secret ----------------
+# GITOPS_SVC_NAME=demo
+
+
