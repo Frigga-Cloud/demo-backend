@@ -11,7 +11,7 @@ steps:
   image: plugins/ecr
   commands:
   - echo "hello"
-  - docker build -t frigga-backend:latest -f Dockerfile .
+  - aws cli
   settings:
     access_key:
       from_secret:  AWS_IAM_FRIGGA_AGENT_ECR_ACCESS_KEY_ID    # (org-secret)
